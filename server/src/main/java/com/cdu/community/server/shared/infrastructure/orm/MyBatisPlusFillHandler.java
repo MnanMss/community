@@ -19,14 +19,14 @@ public class MyBatisPlusFillHandler implements MetaObjectHandler {
     public void insertFill(MetaObject metaObject) {
         log.info("插入时自动填充....");
         // 插入时自动填充
-        strictFillStrategy(metaObject, "createTime", LocalDateTime::now);
-        strictFillStrategy(metaObject, "updateTime", LocalDateTime::now);
+        strictFillStrategy(metaObject, "createdTime", LocalDateTime::now);
+        strictFillStrategy(metaObject, "updatedTime", LocalDateTime::now);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
         log.info("更新时自动填充....");
         // 更新时自动填充
-        strictFillStrategy(metaObject, "updateTime", LocalDateTime::now);
+        strictFillStrategy(metaObject, "updatedTime", LocalDateTime::now);
     }
 }
