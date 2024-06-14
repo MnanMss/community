@@ -49,4 +49,7 @@ public class MeterType {
     @Schema(description = "更新时间")
     @Size(max = 255, message = "更新时间长度不能超过255个字符")
     private String updatedTime;
+
+    @Schema(description = "备注")
+    private String remark;
 }
