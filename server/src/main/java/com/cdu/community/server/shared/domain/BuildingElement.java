@@ -1,4 +1,4 @@
-package com.cdu.community.server.sys.domain;
+package com.cdu.community.server.shared.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 
 /**
  * @author mila
- * @date 2024/6/13 上午9:32
+ * @date 2024/6/13 上午9:35
  */
 @Data
-@TableName("building")
-@Schema(description = "楼栋")
-public class Building {
+@TableName("building_element")
+@Schema(description = "单元")
+public class BuildingElement {
 
     @Schema(description = "主键")
     @TableId(type = IdType.AUTO)
@@ -30,15 +30,14 @@ public class Building {
     @Schema(description = "更新时间")
     private LocalDateTime updatedTime;
 
-    @Schema(description = "楼栋名称")
-    @NotNull(message = "楼栋名称不能为空")
-    @Size(max = 255, message = "楼栋名称长度不能超过255个字符")
+    @Schema(description = "单元名称")
+    @NotNull(message = "单元名称不能为空")
+    @Size(max = 255, message = "单元名称长度不能超过255个字符")
     private String name;
 
-    @Schema(description = "所属大厦/小区id")
-    @NotNull(message = "所属大厦/小区id不能为空")
-    private Long edificeId;
+    @Schema(description = "楼栋id")
+    private Long buildingId;
 
-    @Schema(description = "所属单元id")
-    private Long buildingElementId;
+    @Schema(description = "所属小区id")
+    private Long edificeId;
 }

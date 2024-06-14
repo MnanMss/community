@@ -1,4 +1,4 @@
-package com.cdu.community.server.sys.domain;
+package com.cdu.community.server.shared.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
