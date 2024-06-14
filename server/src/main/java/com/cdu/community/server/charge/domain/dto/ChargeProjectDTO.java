@@ -1,36 +1,17 @@
-package com.cdu.community.server.charge.domain;
+package com.cdu.community.server.charge.domain.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
-
 /**
  * @author mila
- * @date 2024/6/13 上午9:39
+ * @date 2024/6/14 下午3:23
  */
 @Data
-@TableName("charge_project")
-@Schema(description = "收费项目")
-public class ChargeProject {
-
-    @Schema(description = "主键")
-    @TableId(type = IdType.AUTO)
-    private Long id;
-
-    @Schema(description = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createdTime;
-
-    @Schema(description = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updatedTime;
-
+public class ChargeProjectDTO {
     @Schema(description = "收费编码")
     @NotNull(message = "收费编码不能为空")
     @Size(max = 255, message = "收费编码长度不能超过255个字符")
@@ -72,7 +53,7 @@ public class ChargeProject {
 
     @Schema(description = "违约金额;违约金额占比")
     @DecimalMin(value = "0.00", message = "违约金额不能小于0.00")
-   private Double breachAmount;
+    private Double breachAmount;
 
     @Schema(description = "违约开始;违约金开始天数")
     private Integer breachStart;

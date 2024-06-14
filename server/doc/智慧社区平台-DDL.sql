@@ -3,11 +3,10 @@ CREATE TABLE meter_type(
                            `id` INT AUTO_INCREMENT COMMENT '主键' ,
                            `code` VARCHAR(255) NOT NULL  COMMENT '类别代码' ,
                            `name` VARCHAR(255) NOT NULL  COMMENT '类别名称' ,
-                           `charge_code` VARCHAR(255) NOT NULL  COMMENT '收费编码' ,
-                           `charge_name` VARCHAR(255) NOT NULL  COMMENT '收费名称' ,
+                           `charge_project_id` BIGINT NOT NULL  COMMENT '收费项目id' ,
                            `remark` VARCHAR(255)   COMMENT '备注' ,
                            `created_time` DATETIME   COMMENT '创建时间' ,
-                           `updated_time` VARCHAR(255)   COMMENT '更新时间' ,
+                           `updated_time` DATETIME   COMMENT '更新时间' ,
                            PRIMARY KEY (id)
 )  COMMENT = '表计类别';
 
