@@ -1,6 +1,6 @@
 package com.cdu.community.server.shared.port;
 
-import com.cdu.community.server.shared.domain.Code;
+import com.cdu.community.server.shared.domain.entity.Code;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

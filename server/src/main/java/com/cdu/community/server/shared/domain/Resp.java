@@ -1,5 +1,6 @@
 package com.cdu.community.server.shared.domain;
 
+import com.cdu.community.server.shared.domain.entity.Code;
 import lombok.Data;
 
 /**

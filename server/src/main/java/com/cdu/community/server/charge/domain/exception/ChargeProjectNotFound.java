@@ -1,6 +1,6 @@
 package com.cdu.community.server.charge.domain.exception;
 
-import com.cdu.community.server.shared.domain.Code;
+import com.cdu.community.server.shared.domain.entity.Code;
 import com.cdu.community.server.shared.port.BusinessException;
 
 /**

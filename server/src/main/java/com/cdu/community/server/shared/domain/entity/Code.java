@@ -1,4 +1,4 @@
-package com.cdu.community.server.shared.domain;
+package com.cdu.community.server.shared.domain.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
