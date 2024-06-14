@@ -1,5 +1,6 @@
 package com.cdu.community.server.charge.domain.dto;
 
+import com.cdu.community.server.shared.domain.PageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +12,7 @@ import lombok.Data;
  * @date 2024/6/14 下午3:23
  */
 @Data
-public class ChargeProjectDTO {
+public class ChargeProjectDTO extends PageQuery {
     @Schema(description = "收费编码")
     @NotNull(message = "收费编码不能为空")
     @Size(max = 255, message = "收费编码长度不能超过255个字符")
