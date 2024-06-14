@@ -38,4 +38,7 @@ public class Building {
     @Schema(description = "所属大厦/小区id")
     @NotNull(message = "所属大厦/小区id不能为空")
     private Long edificeId;
+
+    @Schema(description = "所属单元id")
+    private Long buildingElementId;
 }

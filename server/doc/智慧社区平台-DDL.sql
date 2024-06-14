@@ -137,8 +137,10 @@ CREATE TABLE building(
                          `updated_time` DATETIME   COMMENT '更新时间' ,
                          `name` VARCHAR(255) NOT NULL  COMMENT '楼栋名称' ,
                          `edifice_id` BIGINT NOT NULL  COMMENT '所属大厦/小区id' ,
+                         `building_element_id` BIGINT NOT NULL  COMMENT '所属单元id' ,
                          PRIMARY KEY (id)
 )  COMMENT = '楼栋';
+
 
 DROP TABLE IF EXISTS proprietor;
 CREATE TABLE proprietor(
@@ -157,14 +159,16 @@ CREATE TABLE room(
                      `created_time` DATETIME   COMMENT '创建时间' ,
                      `updated_time` DATETIME   COMMENT '更新时间' ,
                      `code` VARCHAR(255) NOT NULL  COMMENT '房间编号' ,
-                     `building_id` BIGINT NOT NULL  COMMENT '楼顶id' ,
+                     `building_id` BIGINT NOT NULL  COMMENT '楼栋id' ,
                      `floor` INT NOT NULL  COMMENT '所属楼层' ,
                      `bind_time` DATETIME   COMMENT '绑定时间' ,
                      `first_pay_time` DATETIME   COMMENT '首次缴费时间' ,
-                     `area` DECIMAL(24,2) NOT NULL  COMMENT '建筑面积;0.00' ,
-                     `usage_area` DECIMAL(24,2)   COMMENT '使用面积;0.00' ,
+                     `area` DECIMAL(24,2) NOT NULL DEFAULT 0.00 COMMENT '建筑面积' ,
+                     `usage_area` DECIMAL(24,2)  DEFAULT 0.00 COMMENT '使用面积' ,
+                     `proprietor_id` BIGINT   COMMENT '业主id' ,
                      PRIMARY KEY (id)
 )  COMMENT = '房间';
+
 
 DROP TABLE IF EXISTS building;
 CREATE TABLE building(
@@ -213,8 +217,12 @@ CREATE TABLE charge_room(
                             `charge_project_id` BIGINT NOT NULL  COMMENT '收费项目id' ,
                             `charge_start_time` DATETIME   COMMENT '计费开始日期' ,
                             `charge_end_time` DATETIME   COMMENT '计费结束日期' ,
+                            `ladder_cost` TINYINT(1)   COMMENT '阶梯单价' ,
+                            `breach_rate` DECIMAL(24,2)   COMMENT '违约金率' ,
+                            `breach_start` INT   COMMENT '违约开始天数' ,
                             PRIMARY KEY (id)
 )  COMMENT = '房间收费';
+
 
 DROP TABLE IF EXISTS building_element;
 CREATE TABLE building_element(
@@ -222,9 +230,10 @@ CREATE TABLE building_element(
                                  `created_time` DATETIME   COMMENT '创建时间' ,
                                  `updated_time` DATETIME   COMMENT '更新时间' ,
                                  `name` VARCHAR(255) NOT NULL  COMMENT '单元名称' ,
-                                 `building_id` BIGINT   COMMENT '楼栋id' ,
+                                 `edifice_id` BIGINT   COMMENT '所属小区id' ,
                                  PRIMARY KEY (id)
 )  COMMENT = '单元';
+
 
 DROP TABLE IF EXISTS charge_manage;
 CREATE TABLE charge_manage(
@@ -257,6 +266,7 @@ CREATE TABLE receive_manage(
                                `record_time` DATETIME NOT NULL  COMMENT '录入时间' ,
                                `record_user_id` BIGINT NOT NULL  COMMENT '录入人id' ,
                                `status` TINYINT(1) NOT NULL  COMMENT '审核状态;0-待审核 1-已审核' ,
+                               `judge_user` VARCHAR(255) NOT NULL DEFAULT 'swh' COMMENT '审核人' ,
                                PRIMARY KEY (id)
 )  COMMENT = '应收管理';
 

@@ -42,4 +42,10 @@ public class ChargeRoom {
 
     @Schema(description = "计费结束日期")
     private LocalDateTime chargeEndTime;
+
+    @Schema(description = "违约金率")
+    private Double breachRate;
+
+    @Schema(description = "违约开始天数")
+    private Integer breachStart;
 }

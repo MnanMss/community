@@ -55,4 +55,7 @@ public class Room {
 
     @Schema(description = "使用面积")
     private Double usageArea;
+
+    @Schema(description = "业主Id")
+    private Long proprietorId;
 }

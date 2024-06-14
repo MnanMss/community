@@ -37,4 +37,7 @@ public class BuildingElement {
 
     @Schema(description = "楼栋id")
     private Long buildingId;
+
+    @Schema(description = "所属小区id")
+    private Long edificeId;
 }

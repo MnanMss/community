@@ -77,4 +77,7 @@ public class ReceiveManage {
     @Schema(description = "审核状态;0-待审核 1-已审核")
     @NotNull(message = "审核状态不能为空")
     private Byte status;
+
+    @Schema(description = "审核人")
+    private String judgeUser;
 }
