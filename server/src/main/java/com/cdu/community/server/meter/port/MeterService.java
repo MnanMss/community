@@ -1,6 +1,6 @@
 package com.cdu.community.server.meter.port;
 
-import com.cdu.community.server.meter.domain.MeterType;
+import com.cdu.community.server.meter.domain.entity.MeterType;
 import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
 import com.cdu.community.server.meter.infrastructure.orm.MeterTypeMapper;
 import lombok.RequiredArgsConstructor;

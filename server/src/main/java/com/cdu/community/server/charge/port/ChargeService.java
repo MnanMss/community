@@ -1,6 +1,6 @@
 package com.cdu.community.server.charge.port;
 
-import com.cdu.community.server.charge.domain.ChargeProject;
+import com.cdu.community.server.charge.domain.entity.ChargeProject;
 import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.cdu.community.server.meter.domain;
+package com.cdu.community.server.meter.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;

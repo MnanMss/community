@@ -1,4 +1,4 @@
-package com.cdu.community.server.meter.domain;
+package com.cdu.community.server.meter.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

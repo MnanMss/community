@@ -1,7 +1,7 @@
 package com.cdu.community.server.meter.infrastructure.orm;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cdu.community.server.meter.domain.MeterType;
+import com.cdu.community.server.meter.domain.entity.MeterType;
 
 /**
  * @author mila
