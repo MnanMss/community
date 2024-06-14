@@ -48,5 +48,19 @@ public class MeterController {
         List<MeterTypeVO> voList = list.getRecords().stream().map(MeterTypeVO::of).toList();
         return Resp.ok(new PageDTO<>(list.getTotal() , voList));
     }
+    @PutMapping
+    @Operation(description = "修改表计类别")
+    public Resp<Void> updateMeterType( @RequestBody @Valid MeterType meterType) {
+        log.info("修改表计类别：{}" ,meterType);
+        meterService.updateMeterType(meterType);
+        return Resp.ok();
+    }
+    @DeleteMapping("/type/{id}")
+    @Operation(description = "删除表计类别")
+    public Resp<Void> delMeterType( @PathVariable String id) {
+        log.info("删除表计类别：{}" , id);
+        meterService.delMeterType(id);
+        return Resp.ok();
+    }
 
 }

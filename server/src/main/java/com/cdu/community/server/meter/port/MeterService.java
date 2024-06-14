@@ -49,4 +49,14 @@ public class MeterService {
         Page<MeterType> page = new Page<>(condition.getPageNum() , condition.getPageSize());
         return meterTypeMapper.selectPage(page, query);
     }
+    public void delMeterType(String id) {
+        MeterType meterType = new MeterType();
+        Optional.ofNullable(chargeProjectMapper.selectById(meterType.getChargeProjectId()))
+                .orElseThrow(ChargeProjectNotFound::new);
+        meterTypeMapper.deleteById(id);
+    }
+
+    public void updateMeterType(MeterType meterType) {
+        meterTypeMapper.updateById(meterType);
+    }
 }
