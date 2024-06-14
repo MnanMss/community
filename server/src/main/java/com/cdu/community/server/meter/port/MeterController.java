@@ -1,18 +1,21 @@
 package com.cdu.community.server.meter.port;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
+import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
+import com.cdu.community.server.meter.domain.entity.MeterType;
+import com.cdu.community.server.meter.domain.vo.MeterTypeVO;
 import com.cdu.community.server.shared.domain.Resp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.models.annotations.OpenAPI30;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import com.cdu.community.server.shared.domain.PageDTO;
+
+import java.util.List;
 
 /**
  * @author mila
@@ -35,4 +38,15 @@ public class MeterController {
         meterService.addMeterType(meterTypeDTO);
         return Resp.ok();
     }
+
+    @GetMapping("/list")
+    @Operation(description = "查询表计类别列表")
+    public Resp<PageDTO<MeterTypeVO>> listMeterType(MeterTypeSearchDTO condition) {
+        log.info("查询表计类别列表：{}" , condition);
+        Page<MeterType> list = meterService.listMeterType(condition);
+        log.info(list.getRecords().toString());
+        List<MeterTypeVO> voList = list.getRecords().stream().map(MeterTypeVO::of).toList();
+        return Resp.ok(new PageDTO<>(list.getTotal() , voList));
+    }
+
 }

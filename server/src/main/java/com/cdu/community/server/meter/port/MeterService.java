@@ -1,7 +1,10 @@
 package com.cdu.community.server.meter.port;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.charge.domain.exception.ChargeProjectNotFound;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
+import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
 import com.cdu.community.server.meter.domain.entity.MeterType;
 import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
 import com.cdu.community.server.meter.infrastructure.orm.MeterTypeMapper;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,5 +34,20 @@ public class MeterService {
         Optional.ofNullable(chargeProjectMapper.selectById(meterType.getChargeProjectId()))
             .orElseThrow(ChargeProjectNotFound::new);
         meterTypeMapper.insert(meterType);
+    }
+
+    public Page<MeterType> listMeterType(MeterTypeSearchDTO condition) {
+        LambdaQueryWrapper<MeterType> query = new LambdaQueryWrapper<>();
+        if(condition.getName() != null && !condition.getName().isEmpty()) {
+            query.like(MeterType::getName , condition.getName());
+        }
+        if(condition.getCode() != null && !condition.getCode().isEmpty()) {
+            query.likeLeft(MeterType::getCode , condition.getCode());
+        }
+        if(condition.getChargeProjectId() != null) {
+            query.eq(MeterType::getChargeProjectId , condition.getChargeProjectId());
+        }
+        Page<MeterType> page = new Page<>(condition.getPageNum() , condition.getPageSize());
+        return meterTypeMapper.selectPage(page, query);
     }
 }
