@@ -93,8 +93,10 @@ CREATE TABLE meter_reading_record(
                                      `record_type` TINYINT(1) NOT NULL  COMMENT '抄表方式;0-手工 1-其它' ,
                                      `serial_number` VARCHAR(255)   COMMENT '抄表流水号' ,
                                      `record_user_id` BIGINT   COMMENT '抄表人id' ,
+                                     `input_mode` TINYINT(1) NOT NULL  COMMENT '录入方式;0-按止数录入 1-按用了录入' ,
                                      PRIMARY KEY (id)
 )  COMMENT = '抄表记录';
+
 
 DROP TABLE IF EXISTS room;
 CREATE TABLE room(
@@ -102,9 +104,17 @@ CREATE TABLE room(
                      `created_time` DATETIME   COMMENT '创建时间' ,
                      `updated_time` DATETIME   COMMENT '更新时间' ,
                      `code` VARCHAR(255) NOT NULL  COMMENT '房间编号' ,
-                     `building_id` BIGINT NOT NULL  COMMENT '楼顶id' ,
+                     `building_id` BIGINT NOT NULL  COMMENT '楼栋id' ,
+                     `floor` INT NOT NULL  COMMENT '所属楼层' ,
+                     `bind_time` DATETIME   COMMENT '绑定时间' ,
+                     `first_pay_time` DATETIME   COMMENT '首次缴费时间' ,
+                     `area` DECIMAL(24,2) NOT NULL DEFAULT 0.00 COMMENT '建筑面积' ,
+                     `usage_area` DECIMAL(24,2)  DEFAULT 0.00 COMMENT '使用面积' ,
+                     `proprietor_id` BIGINT   COMMENT '业主id' ,
+                     `edifice_id` BIGINT   COMMENT '大厦/小区id' ,
                      PRIMARY KEY (id)
 )  COMMENT = '房间';
+
 
 DROP TABLE IF EXISTS table_change_record;
 CREATE TABLE table_change_record(
@@ -140,7 +150,7 @@ CREATE TABLE building(
                          `updated_time` DATETIME   COMMENT '更新时间' ,
                          `name` VARCHAR(255) NOT NULL  COMMENT '楼栋名称' ,
                          `edifice_id` BIGINT NOT NULL  COMMENT '所属大厦/小区id' ,
-                         `element_id` BIGINT NOT NULL  COMMENT '所属单元id' ,
+                         `eId` BIGINT NOT NULL  COMMENT '所属单元id' ,
                          PRIMARY KEY (id)
 )  COMMENT = '楼栋';
 
