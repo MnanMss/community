@@ -1,15 +1,16 @@
 package com.cdu.community.server.charge.port;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cdu.community.server.charge.domain.dto.ChargeManageDTO;
 import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
 import com.cdu.community.server.charge.domain.dto.ChargeRoomDTO;
 import com.cdu.community.server.charge.domain.dto.ChargeRoomStatisticsDTO;
-import com.cdu.community.server.charge.domain.entity.ChargeProject;
-import com.cdu.community.server.charge.domain.entity.ChargeRoom;
-import com.cdu.community.server.charge.domain.entity.ChargeRoomStatistics;
+import com.cdu.community.server.charge.domain.entity.*;
+import com.cdu.community.server.charge.domain.vo.ChargeManageVO;
 import com.cdu.community.server.charge.domain.vo.ChargeProjectVo;
 import com.cdu.community.server.charge.domain.vo.ChargeRoomStatisticsVO;
 import com.cdu.community.server.charge.domain.vo.ChargeRoomVO;
+import com.cdu.community.server.charge.infrastructure.orm.ChargeManageMapper;
 import com.cdu.community.server.shared.domain.PageVO;
 import com.cdu.community.server.shared.domain.Resp;
 import com.cdu.community.server.shared.domain.entity.Room;
@@ -121,6 +122,18 @@ public class ChargeController {
     public Resp<PageVO<ChargeRoomStatisticsVO>> scheduleChargeRoom(ChargeRoomStatisticsDTO condition){
         log.info("房间收费项目一览表：{}", condition);
         PageVO<ChargeRoomStatisticsVO> list = chargeService.scheduleChargeRoom(condition);
+        return Resp.ok(list);
+    }
+
+    /**
+     * 收费管理表、收费项目表、应收管理表
+     * */
+    @GetMapping("manage/{roomId}")
+    @Operation(description = "获取收费选项-应收明细列表")
+    public Resp<PageVO<ChargeManageVO>> listChargeManage(ChargeManageDTO condition){
+        log.info("获取收费选项-应收明细列表：{}", condition);
+        PageVO<ChargeManageVO> list = chargeService.listChargeManage(condition);
+        log.info(list.toString());
         return Resp.ok(list);
     }
 

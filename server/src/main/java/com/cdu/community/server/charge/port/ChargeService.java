@@ -2,24 +2,25 @@ package com.cdu.community.server.charge.port;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cdu.community.server.charge.domain.dto.ChargeManageDTO;
 import com.cdu.community.server.charge.domain.dto.ChargeRoomDTO;
 import com.cdu.community.server.charge.domain.dto.ChargeRoomStatisticsDTO;
-import com.cdu.community.server.charge.domain.entity.ChargeProject;
+import com.cdu.community.server.charge.domain.entity.*;
 import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
-import com.cdu.community.server.charge.domain.entity.ChargeRoom;
-import com.cdu.community.server.charge.domain.entity.ChargeRoomStatistics;
+import com.cdu.community.server.charge.domain.vo.ChargeManageVO;
 import com.cdu.community.server.charge.domain.vo.ChargeRoomStatisticsVO;
 import com.cdu.community.server.charge.domain.vo.ReceiveManageVO;
-import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
-import com.cdu.community.server.charge.infrastructure.orm.ChargeRoomMapper;
-import com.cdu.community.server.charge.infrastructure.orm.ChargeRoomStatisticsMapper;
+import com.cdu.community.server.charge.infrastructure.orm.*;
 import com.cdu.community.server.shared.domain.PageVO;
 import com.cdu.community.server.shared.port.SharedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +34,8 @@ public class ChargeService {
     private final ChargeRoomMapper chargeRoomMapper;
     private final SharedService sharedService;
     private final ChargeRoomStatisticsMapper chargeRoomStatisticsMapper;
+    private final ChargeManageMapper chargeManageMapper;
+    private final ReceiveManageMapper receiveManageMapper;
 
 
     public void addChargeProject(ChargeProjectDTO chargeProjectDTO) {
@@ -130,6 +133,59 @@ public class ChargeService {
     }
 
     /**
+     * 获取应收管理信息
+     *
+     * @param roomId 房间id
+     * */
+    public List<ReceiveManage> getReceiveManage(Long roomId){
+        LambdaQueryWrapper<ReceiveManage> query = new LambdaQueryWrapper<>();
+        query.eq(ReceiveManage::getRoomId, roomId);
+        return receiveManageMapper.selectList(query);
+    }
+
+    public PageVO<ChargeManageVO> listChargeManage(ChargeManageDTO condition) {
+        //获取应收管理信息
+        List<ReceiveManage> receiveManageList = getReceiveManage(condition.getRoomId());
+        //获取应收管理id列表
+        List<Long> receiveManageIds = receiveManageList.stream()
+                .map(ReceiveManage::getId)
+                .toList();
+
+        List<ChargeManage> chargeManageList = chargeManageMapper.selectBatchIds(receiveManageIds);
+
+        List<Long> chargeProjectIds = receiveManageList.stream()
+                .map(ReceiveManage::getChargeProjectId)
+                .toList();
+        List<ChargeProject> chargeProjectList = chargeProjectMapper.selectBatchIds(chargeProjectIds);
+        // 创建一个Map来存储ChargeProject对象，便于后续查找
+        Map<Long, ChargeProject> chargeProjectMap = chargeProjectList.stream()
+                .collect(Collectors.toMap(ChargeProject::getId, Function.identity()));
+        // 组合信息
+        List<ChargeManageVO> chargeManageVOList = chargeManageList.stream()
+                .map(chargeManage -> {
+                    ChargeManageVO vo = ChargeManageVO.of(chargeManage);
+                    // 查找对应的ChargeProject对象
+                    ChargeProject chargeProject = chargeProjectMap.get(chargeManage.getId());
+                    if (chargeProject != null) {
+                        vo.setName(chargeProject.getName());
+                    }
+                    return vo;
+                })
+                .collect(Collectors.toList());
+
+        // 获取分页参数
+        int pageNum = condition.getPageNum();
+        int pageSize = condition.getPageSize();
+        int total = chargeManageList.size();
+        int fromIndex = Math.min((pageNum - 1) * pageSize, total);
+        int toIndex = Math.min(pageNum * pageSize, total);
+
+        // 获取当前页的数据
+        List<ChargeManageVO> paginatedList = chargeManageVOList.subList(fromIndex, toIndex);
+        return new PageVO<>(total, paginatedList);
+    }
+
+    /**
      * 将entity转换成VO
      * */
     private ChargeRoomStatisticsVO convertToVO(ChargeRoomStatistics statistics) {
@@ -148,4 +204,5 @@ public class ChargeService {
 
         return vo;
     }
+
 }

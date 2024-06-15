@@ -64,7 +64,7 @@ public class SharedController {
         return Resp.ok(new PageVO<>(list.getTotal(), voList));
     }
 
-    @GetMapping("/manage/proprietor/list")
+    @GetMapping("/proprietor/list")
     @Operation(description = "查询房间业主信息列表")
     public Resp<PageVO<RoomProprietorVO>> listRoomProprietor(RoomProprietorDTO condition){
         log.info("查询房间业主信息列表：{}", condition);
@@ -74,5 +74,17 @@ public class SharedController {
                 .map(RoomProprietorVO::of)
                 .toList();
         return Resp.ok(new PageVO<>(list.getTotal(), voList));
+    }
+
+    /**
+     * @param roomId 房间id
+     */
+    @GetMapping("/proprietor/{roomId}")
+    @Operation(description = "获取客户资料")
+    public Resp<RoomVO> getCustomerInfo(@PathVariable("roomId") Long roomId){
+        log.info("获取客户资料：{}", roomId);
+        RoomVO roomVO = sharedService.getCustomerInfo(roomId);
+        log.info("获取客户资料：{}", roomVO);
+        return Resp.ok(roomVO);
     }
 }

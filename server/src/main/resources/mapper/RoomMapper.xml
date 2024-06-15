@@ -19,4 +19,22 @@
         </if>
         limit #{param.offset},#{param.pageSize}
     </select>
+
+    <select id="getCustomerInfoByRId" resultType="com.cdu.community.server.shared.domain.vo.RoomVO">
+        select
+            b.name as buildingName,
+            be.name as buildingElementName,
+            r.code as roomCode,
+            p.name proprietorName,
+            p.phone proprietorPhone,
+            r.bind_time,
+            r.first_pay_time,
+            r.area,
+            r.usage_area
+        from room r
+        left join building b on b.id=r.building_id
+        left join building_element be on be.id=b.eId
+        left join proprietor p on p.id=r.proprietor_id
+        where r.id=#{roomId}
+    </select>
 </mapper>

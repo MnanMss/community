@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.shared.domain.dto.RoomDTO;
 import com.cdu.community.server.shared.domain.dto.RoomProprietorDTO;
 import com.cdu.community.server.shared.domain.entity.*;
+import com.cdu.community.server.shared.domain.vo.RoomVO;
 import com.cdu.community.server.shared.infrastructure.orm.BuildingMapper;
 import com.cdu.community.server.shared.infrastructure.orm.EdificeMapper;
 import com.cdu.community.server.shared.infrastructure.orm.ProprietorMapper;
@@ -110,5 +111,9 @@ public class SharedService {
         page.setSize(pageSize);
 
         return page;
+    }
+
+    public RoomVO getCustomerInfo(Long roomId) {
+        return roomMapper.getCustomerInfoByRId(roomId);
     }
 }
