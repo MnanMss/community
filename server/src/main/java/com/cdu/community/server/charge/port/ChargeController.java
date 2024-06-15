@@ -28,6 +28,7 @@ import java.util.List;
 @Validated
 @Slf4j
 @Tag(name="ChargeController" , description = "收费管理")
+@CrossOrigin
 public class ChargeController {
     private final ChargeService chargeService;
     private final SharedService sharedService;

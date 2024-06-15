@@ -13,6 +13,7 @@ import com.cdu.community.server.shared.infrastructure.orm.RoomMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@CrossOrigin
 public class SharedService {
     private final RoomMapper roomMapper;
     private final BuildingMapper buildingMapper;

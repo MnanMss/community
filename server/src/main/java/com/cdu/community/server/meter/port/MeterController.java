@@ -31,6 +31,7 @@ import java.util.List;
 @Slf4j
 @Validated
 @Tag(name="MeterController" , description = "抄表管理")
+@CrossOrigin
 public class MeterController {
 
     private final MeterService meterService;
@@ -48,7 +49,6 @@ public class MeterController {
     public Resp<PageVO<MeterTypeVO>> listMeterType(MeterTypeSearchDTO condition) {
         log.info("查询表计类别列表：{}" , condition);
         Page<MeterType> list = meterService.listMeterType(condition);
-        log.info(list.getRecords().toString());
         List<MeterTypeVO> voList = list.getRecords().stream().map(MeterTypeVO::of).toList();
         return Resp.ok(new PageVO<>(list.getTotal() , voList));
     }

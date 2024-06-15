@@ -59,7 +59,7 @@ public class MeterService {
         if(condition.getCode() != null && !condition.getCode().isEmpty()) {
             query.likeLeft(MeterType::getCode , condition.getCode());
         }
-        if(condition.getChargeProjectId() != null) {
+        if(condition.getChargeProjectId() != null && condition.getChargeProjectId() > 0) {
             query.eq(MeterType::getChargeProjectId , condition.getChargeProjectId());
         }
         Page<MeterType> page = new Page<>(condition.getPageNum() , condition.getPageSize());
