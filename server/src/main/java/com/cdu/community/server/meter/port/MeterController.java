@@ -84,4 +84,13 @@ public class MeterController {
         return Resp.ok(new PageVO<>(page.getTotal() , voList));
     }
 
+
+    @PutMapping
+    @Operation(description = "修改表计")
+    public Resp<Void> modifyMeter(@RequestBody @Valid Meter meter) {
+        log.info("修改表计：{}" , meter);
+        meterService.modifyMeter(meter);
+        return Resp.ok();
+    }
+
 }

@@ -78,4 +78,8 @@ public class MeterService {
         Page<Meter> page = new Page<>(condition.getPageNum() , condition.getPageSize());
         return meterMapper.selectPage(page , query);
     }
+
+    public void modifyMeter(Meter meter) {
+        meterMapper.updateById(meter);
+    }
 }
