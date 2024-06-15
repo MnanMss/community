@@ -3,10 +3,7 @@ package com.cdu.community.server.charge.port;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.charge.domain.dto.*;
 import com.cdu.community.server.charge.domain.entity.*;
-import com.cdu.community.server.charge.domain.vo.ChargeManageVO;
-import com.cdu.community.server.charge.domain.vo.ChargeProjectVo;
-import com.cdu.community.server.charge.domain.vo.ChargeRoomStatisticsVO;
-import com.cdu.community.server.charge.domain.vo.ChargeRoomVO;
+import com.cdu.community.server.charge.domain.vo.*;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeManageMapper;
 import com.cdu.community.server.shared.domain.PageVO;
 import com.cdu.community.server.shared.domain.Resp;
@@ -150,4 +147,23 @@ public class ChargeController {
         return Resp.ok();
     }
 
+    @DeleteMapping("/receive/manage/{id}")
+    @Operation(description = "删除应收记录")
+    public Resp<Void> deleteReceiveManage(@PathVariable("id") Long id){
+        log.info("删除应收记录：{}", id);
+        chargeService.deleteReceiveManage(id);
+        return Resp.ok();
+    }
+
+    @GetMapping("/receive/manage/list")
+    @Operation(description = "查询应收记录列表")
+    public Resp<PageVO<ReceiveManageVO>> listReceiveMange(ReceiveManageDTO condition){
+        log.info("查询应收记录列表：{}", condition);
+        Page<ReceiveManage> list = chargeService.listReceiveManage(condition);
+        log.info(list.getRecords().toString());
+        List<ReceiveManageVO> voList = list.getRecords().stream()
+                .map(ReceiveManageVO::of)
+                .toList();
+        return Resp.ok(new PageVO<>(list.getTotal(), voList));
+    }
 }

@@ -213,4 +213,18 @@ public class ChargeService {
         BeanUtils.copyProperties(receiveManageDTO, receiveManage);
         receiveManageMapper.updateById(receiveManage);
     }
+
+    public void deleteReceiveManage(Long id) {
+        receiveManageMapper.deleteById(id);
+    }
+
+    public Page<ReceiveManage> listReceiveManage(ReceiveManageDTO condition) {
+        LambdaQueryWrapper<ReceiveManage> query = new LambdaQueryWrapper<>();
+        query.eq(ReceiveManage::getRoomId, condition.getRoomId());
+        if(condition.getChargeProjectId() != null){
+            query.eq(ReceiveManage::getChargeProjectId, condition.getChargeProjectId());
+        }
+        Page<ReceiveManage> page = new Page<>(condition.getPageNum(), condition.getPageSize());
+        return receiveManageMapper.selectPage(page, query);
+    }
 }
