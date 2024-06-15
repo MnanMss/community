@@ -2,10 +2,13 @@ package com.cdu.community.server.meter.port;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.meter.domain.dto.MeterDto;
+import com.cdu.community.server.meter.domain.dto.MeterSearchDTO;
 import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
 import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
+import com.cdu.community.server.meter.domain.entity.Meter;
 import com.cdu.community.server.meter.domain.entity.MeterType;
 import com.cdu.community.server.meter.domain.vo.MeterTypeVO;
+import com.cdu.community.server.meter.domain.vo.MeterVO;
 import com.cdu.community.server.shared.domain.Resp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.cdu.community.server.shared.domain.PageDTO;
+import com.cdu.community.server.shared.domain.PageVO;
 
 import java.util.List;
 
@@ -40,14 +43,14 @@ public class MeterController {
         return Resp.ok();
     }
 
-    @GetMapping("/list")
+    @GetMapping("/type/list")
     @Operation(description = "查询表计类别列表")
-    public Resp<PageDTO<MeterTypeVO>> listMeterType(MeterTypeSearchDTO condition) {
+    public Resp<PageVO<MeterTypeVO>> listMeterType(MeterTypeSearchDTO condition) {
         log.info("查询表计类别列表：{}" , condition);
         Page<MeterType> list = meterService.listMeterType(condition);
         log.info(list.getRecords().toString());
         List<MeterTypeVO> voList = list.getRecords().stream().map(MeterTypeVO::of).toList();
-        return Resp.ok(new PageDTO<>(list.getTotal() , voList));
+        return Resp.ok(new PageVO<>(list.getTotal() , voList));
     }
     @PutMapping
     @Operation(description = "修改表计类别")
@@ -70,6 +73,15 @@ public class MeterController {
         log.info("新增表计：{}",  meterDto);
         meterService.addMeter(meterDto);
         return Resp.ok();
+    }
+
+    @GetMapping("/list")
+    @Operation(description = "表计列表")
+    public Resp<PageVO<MeterVO>> listMeter(MeterSearchDTO condition) {
+        log.info("表计列表：{}" , condition);
+        Page<Meter> page = meterService.listMeter(condition);
+        List<MeterVO> voList = page.getRecords().stream().map(MeterVO::of).toList();
+        return Resp.ok(new PageVO<>(page.getTotal() , voList));
     }
 
 }

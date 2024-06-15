@@ -1,7 +1,5 @@
 package com.cdu.community.server.shared.domain;
 
-import lombok.Getter;
-
 import java.util.List;
 
 /**
@@ -10,6 +8,6 @@ import java.util.List;
  * @author mila
  * @date 2024/6/12 下午11:06
  */
-public record PageDTO<T>(long total, List<? extends T> data) {
+public record PageVO<T>(long total, List<? extends T> data) {
 
 }

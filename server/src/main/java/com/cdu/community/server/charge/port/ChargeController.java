@@ -7,7 +7,7 @@ import com.cdu.community.server.charge.domain.entity.ChargeProject;
 import com.cdu.community.server.charge.domain.entity.ChargeRoom;
 import com.cdu.community.server.charge.domain.vo.ChargeProjectVo;
 import com.cdu.community.server.charge.domain.vo.ChargeRoomVO;
-import com.cdu.community.server.shared.domain.PageDTO;
+import com.cdu.community.server.shared.domain.PageVO;
 import com.cdu.community.server.shared.domain.Resp;
 import com.cdu.community.server.shared.domain.entity.Room;
 import com.cdu.community.server.shared.port.SharedService;
@@ -60,14 +60,14 @@ public class ChargeController {
 
     @GetMapping("/project/list")
     @Operation(description = "查询收费项目列表")
-    public Resp<PageDTO<ChargeProjectVo>> listChargeProject(ChargeProjectDTO condition){
+    public Resp<PageVO<ChargeProjectVo>> listChargeProject(ChargeProjectDTO condition){
         log.info("查询收费项目列表：{}", condition);
         Page<ChargeProject> list = chargeService.listChargeProject(condition);
         log.info(list.getRecords().toString());
         List<ChargeProjectVo> voList = list.getRecords().stream().
                 map(ChargeProjectVo::of)
                 .toList();
-        return Resp.ok(new PageDTO<>(list.getTotal(), voList));
+        return Resp.ok(new PageVO<>(list.getTotal(), voList));
     }
 
     @PostMapping("/room/project")
@@ -96,7 +96,7 @@ public class ChargeController {
 
     @GetMapping("room/project/list")
     @Operation(description = "查询房间收费项目列表")
-    public Resp<PageDTO<ChargeRoomVO>> listChargeRoom(ChargeRoomDTO condition){
+    public Resp<PageVO<ChargeRoomVO>> listChargeRoom(ChargeRoomDTO condition){
         log.info("查询房间收费项目列表：{}", condition);
         Page<ChargeRoom> list = chargeService.listChargeRoom(condition);
         log.info(list.getRecords().toString());
@@ -107,6 +107,6 @@ public class ChargeController {
                     return ChargeRoomVO.of(chargeRoom, room, chargeProject);
                 })
                 .toList();
-        return Resp.ok(new PageDTO<>(list.getTotal(), voList));
+        return Resp.ok(new PageVO<>(list.getTotal(), voList));
     }
 }

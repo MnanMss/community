@@ -1,7 +1,7 @@
 package com.cdu.community.server.shared.port;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cdu.community.server.shared.domain.PageDTO;
+import com.cdu.community.server.shared.domain.PageVO;
 import com.cdu.community.server.shared.domain.Resp;
 import com.cdu.community.server.shared.domain.dto.RoomDTO;
 import com.cdu.community.server.shared.domain.entity.Building;
@@ -48,7 +48,7 @@ public class SharedController {
      * */
     @GetMapping("/room/list")
     @Operation(description = "查询房间列表")
-    public Resp<PageDTO<RoomVO>> listRoom(RoomDTO condition){
+    public Resp<PageVO<RoomVO>> listRoom(RoomDTO condition){
         log.info("查询房间列表：{}", condition);
         Page<Room> list = sharedService.listRoom(condition);
         log.info(list.getRecords().toString());
@@ -58,6 +58,6 @@ public class SharedController {
                     return RoomVO.of(room, building);
                 })
                 .toList();
-        return Resp.ok(new PageDTO<>(list.getTotal(), voList));
+        return Resp.ok(new PageVO<>(list.getTotal(), voList));
     }
 }

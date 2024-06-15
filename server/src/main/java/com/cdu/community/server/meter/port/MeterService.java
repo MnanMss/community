@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.charge.domain.exception.ChargeProjectNotFound;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
 import com.cdu.community.server.meter.domain.dto.MeterDto;
+import com.cdu.community.server.meter.domain.dto.MeterSearchDTO;
 import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
 import com.cdu.community.server.meter.domain.entity.Meter;
 import com.cdu.community.server.meter.domain.entity.MeterType;
@@ -69,5 +70,12 @@ public class MeterService {
         Meter meter = new Meter();
         BeanUtils.copyProperties(meterDto , meter);
         meterMapper.insert(meter);
+    }
+
+    public Page<Meter> listMeter(MeterSearchDTO condition) {
+        LambdaQueryWrapper<Meter> query = new LambdaQueryWrapper<>();
+        query.eq(Meter::getRoomId , condition.getRoomId());
+        Page<Meter> page = new Page<>(condition.getPageNum() , condition.getPageSize());
+        return meterMapper.selectPage(page , query);
     }
 }
