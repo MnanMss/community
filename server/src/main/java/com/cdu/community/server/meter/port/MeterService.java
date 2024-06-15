@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -123,6 +124,7 @@ public class MeterService {
     public void addMeterRecord(MeterReadingRecordDTO meterReadingRecordDTO) {
         MeterReadingRecord meterReadingRecord = new MeterReadingRecord();
         BeanUtils.copyProperties(meterReadingRecordDTO , meterReadingRecord);
+        meterReadingRecord.setSerialNumber(String.valueOf(System.nanoTime()));
         Long roomId = sharedService.getRoomByCode(meterReadingRecordDTO.getRoomCode()).getId();
         meterReadingRecord.setRoomId(roomId);
         meterReadingRecordMapper.insert(meterReadingRecord);
