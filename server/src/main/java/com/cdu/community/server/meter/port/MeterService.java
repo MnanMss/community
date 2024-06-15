@@ -6,11 +6,14 @@ import com.cdu.community.server.charge.domain.exception.ChargeProjectNotFound;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
 import com.cdu.community.server.meter.domain.dto.*;
 import com.cdu.community.server.meter.domain.entity.Meter;
+import com.cdu.community.server.meter.domain.entity.MeterReadingRecord;
 import com.cdu.community.server.meter.domain.entity.MeterType;
 import com.cdu.community.server.meter.domain.entity.RoomStatistics;
 import com.cdu.community.server.meter.infrastructure.orm.MeterMapper;
+import com.cdu.community.server.meter.infrastructure.orm.MeterReadingRecordMapper;
 import com.cdu.community.server.meter.infrastructure.orm.MeterTypeMapper;
 import com.cdu.community.server.meter.infrastructure.orm.RoomStatisticsMapper;
+import com.cdu.community.server.shared.port.SharedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -35,6 +38,9 @@ public class MeterService {
 
     private final RoomStatisticsMapper roomStatisticsMapper;
 
+    private final MeterReadingRecordMapper meterReadingRecordMapper;
+
+    private final SharedService sharedService;
     public void addMeterType(MeterTypeDTO meterTypeDTO) {
         MeterType meterType = new MeterType();
         BeanUtils.copyProperties(meterTypeDTO , meterType);
@@ -112,5 +118,13 @@ public class MeterService {
             meterTypes = meterTypeMapper.selectBatchIds(meterTypeIdList);
         }
         return meterTypes;
+    }
+
+    public void addMeterRecord(MeterReadingRecordDTO meterReadingRecordDTO) {
+        MeterReadingRecord meterReadingRecord = new MeterReadingRecord();
+        BeanUtils.copyProperties(meterReadingRecordDTO , meterReadingRecord);
+        Long roomId = sharedService.getRoomByCode(meterReadingRecordDTO.getRoomCode()).getId();
+        meterReadingRecord.setRoomId(roomId);
+        meterReadingRecordMapper.insert(meterReadingRecord);
     }
 }

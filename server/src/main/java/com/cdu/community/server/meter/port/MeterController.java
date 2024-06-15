@@ -118,4 +118,11 @@ public class MeterController {
         return Resp.ok(new PageVO<>(page.getTotal() , list));
     }
 
+    @PostMapping("/reading/record")
+    @Operation(description = "新增抄表记录")
+    public Resp<Void> addMeterRecord(@RequestBody @Valid MeterReadingRecordDTO meterReadingRecordDTO) {
+        log.info("新增抄表记录：{}" , meterReadingRecordDTO);
+        meterService.addMeterRecord(meterReadingRecordDTO);
+        return Resp.ok();
+    }
 }

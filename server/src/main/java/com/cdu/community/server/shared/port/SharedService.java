@@ -73,7 +73,9 @@ public class SharedService {
      * @param roomCode 房间号
      * */
     public Room getRoomByCode(String roomCode){
-        return roomMapper.getRoomByCode(roomCode);
+        LambdaQueryWrapper<Room> query = new LambdaQueryWrapper<>();
+        query.eq(Room::getCode , roomCode);
+        return roomMapper.selectOne(query);
     }
 
     /**

@@ -1,8 +1,6 @@
 package com.cdu.community.server.meter.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -26,9 +24,11 @@ public class MeterReadingRecord {
     private Long id;
 
     @Schema(description = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date createdTime;
 
     @Schema(description = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updatedTime;
 
     @Schema(description = "房间id")
@@ -66,7 +66,7 @@ public class MeterReadingRecord {
     @Schema(description = "倍率")
     @NotNull(message = "倍率不能为空")
     @DecimalMin(value = "0.00", message = "倍率不能小于0.00")
-    private Double rate;
+    private Double rate = 1.00;
 
     @Schema(description = "数量")
     @NotNull(message = "数量不能为空")
@@ -75,7 +75,7 @@ public class MeterReadingRecord {
 
     @Schema(description = "抄表状态;0-已录入 1-待收费 2-已收费 3-已录入")
     @NotNull(message = "抄表状态不能为空")
-    private Integer status;
+    private Integer status = 0;
 
     @Schema(description = "录单时间")
     @NotNull(message = "录单时间不能为空")
@@ -83,7 +83,7 @@ public class MeterReadingRecord {
 
     @Schema(description = "抄表方式;0-手工 1-其它")
     @NotNull(message = "抄表方式不能为空")
-    private Integer recordType;
+    private Integer recordType = 0;
 
     @Schema(description = "抄表流水号")
     @Size(max = 255, message = "抄表流水号长度不能超过255个字符")
@@ -91,4 +91,7 @@ public class MeterReadingRecord {
 
     @Schema(description = "抄表人id")
     private Long recordUserId;
+
+    @Schema(description = "录入方式;0-按止数录入 1-按用了录入")
+    private Integer inputMode = 0;
 }
