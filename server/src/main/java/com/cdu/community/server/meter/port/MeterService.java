@@ -137,4 +137,19 @@ public class MeterService {
     public void delMeterRecord(Long id) {
         meterReadingRecordMapper.deleteById(id);
     }
+
+    public Page<MeterReadingRecord> listMeterRecord(MeterReadingRecordSearchDTO condition) {
+        LambdaQueryWrapper<MeterReadingRecord> query = new LambdaQueryWrapper<>();
+        if(condition.getNum() != null && !condition.getNum().isEmpty()) {
+            query.eq(MeterReadingRecord::getNum , condition.getNum());
+        }
+        if(condition.getStartChargeTime() != null) {
+            query.ge(MeterReadingRecord::getStartChargeTime , condition.getStartChargeTime());
+        }
+        if(condition.getEndChargeTime() != null) {
+            query.le(MeterReadingRecord::getEndChargeTime , condition.getEndChargeTime());
+        }
+        Page<MeterReadingRecord> page = new Page<>(condition.getPageNum() , condition.getPageSize());
+        return meterReadingRecordMapper.selectPage(page , query);
+    }
 }

@@ -143,4 +143,12 @@ public class MeterController {
         meterService.delMeterRecord(id);
         return Resp.ok();
     }
+
+    @GetMapping("/reading/record/list")
+    @Operation(description = "抄表记录列表")
+    public Resp<PageVO<MeterReadingRecord>> listMeterRecord(MeterReadingRecordSearchDTO condition) {
+        log.info("抄表记录列表：{}" , condition);
+        Page<MeterReadingRecord> page =  meterService.listMeterRecord(condition);
+        return Resp.ok(new PageVO<>(page.getTotal() , page.getRecords()));
+    }
 }
