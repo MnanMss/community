@@ -71,7 +71,6 @@ public class ChargeRoomVO {
         chargeRoomVO.setChargeProjectName(chargeProject.getName());
         chargeRoomVO.setBillingType(chargeProject.getBillingType());
         chargeRoomVO.setFormulaMode(chargeProject.getFormulaMode());
-        chargeRoomVO.set
         return chargeRoomVO;
     }
 }

@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.charge.domain.exception.ChargeProjectNotFound;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
+import com.cdu.community.server.meter.domain.dto.MeterDto;
 import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
+import com.cdu.community.server.meter.domain.entity.Meter;
 import com.cdu.community.server.meter.domain.entity.MeterType;
 import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
+import com.cdu.community.server.meter.infrastructure.orm.MeterMapper;
 import com.cdu.community.server.meter.infrastructure.orm.MeterTypeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -25,6 +28,8 @@ public class MeterService {
     private final MeterTypeMapper meterTypeMapper;
 
     private final ChargeProjectMapper chargeProjectMapper;
+
+    private final MeterMapper meterMapper;
 
     public void addMeterType(MeterTypeDTO meterTypeDTO) {
         MeterType meterType = new MeterType();
@@ -58,5 +63,11 @@ public class MeterService {
 
     public void updateMeterType(MeterType meterType) {
         meterTypeMapper.updateById(meterType);
+    }
+
+    public void addMeter(MeterDto meterDto) {
+        Meter meter = new Meter();
+        BeanUtils.copyProperties(meterDto , meter);
+        meterMapper.insert(meter);
     }
 }

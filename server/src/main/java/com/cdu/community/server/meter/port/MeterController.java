@@ -1,6 +1,7 @@
 package com.cdu.community.server.meter.port;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cdu.community.server.meter.domain.dto.MeterDto;
 import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
 import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
 import com.cdu.community.server.meter.domain.entity.MeterType;
@@ -57,12 +58,18 @@ public class MeterController {
     }
     @DeleteMapping("/type/{id}")
     @Operation(description = "删除表计类别")
-    public Resp<Void> delMeterType( @PathVariable String id) {
+    public Resp<Void> delMeterType(@PathVariable String id) {
         log.info("删除表计类别：{}" , id);
         meterService.delMeterType(id);
         return Resp.ok();
     }
 
-
+    @PostMapping
+    @Operation(description = "新增表计")
+    public Resp<Void> addMeter(@RequestBody @Valid MeterDto meterDto) {
+        log.info("新增表计：{}",  meterDto);
+        meterService.addMeter(meterDto);
+        return Resp.ok();
+    }
 
 }

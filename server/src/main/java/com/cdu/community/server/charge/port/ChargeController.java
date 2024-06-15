@@ -109,16 +109,4 @@ public class ChargeController {
                 .toList();
         return Resp.ok(new PageDTO<>(list.getTotal(), voList));
     }
-
-    @GetMapping("room/project/schedule")
-    @Operation(description = "房间收费项目一览表")
-    public Resp<PageDTO<ChargeRoomVO>> scheduleChargeRoom(ChargeRoomDTO condition){
-        log.info("房间收费项目一览表：{}", condition);
-        Page<ChargeRoom> list = chargeService.scheduleChargeRoom(condition);
-        log.info(list.getRecords().toString());
-        List<ChargeRoomVO> voList = list.getRecords().stream()
-                .map()
-                .toList();
-        return Resp.ok(new PageDTO<>(list.getTotal(), voList));
-    }
 }

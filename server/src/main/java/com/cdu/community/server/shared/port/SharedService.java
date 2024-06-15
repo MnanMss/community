@@ -64,12 +64,4 @@ public class SharedService {
         return roomMapper.selectPage(page, query);
     }
 
-    /**
-     * 查询房间信息
-     *
-     * @param roomCode 房间号
-     * */
-    public Room getRoomByCode(String roomCode){
-        return roomMapper.select
-    }
 }
