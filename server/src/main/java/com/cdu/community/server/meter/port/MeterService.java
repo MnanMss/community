@@ -55,10 +55,7 @@ public class MeterService {
         Page<MeterType> page = new Page<>(condition.getPageNum() , condition.getPageSize());
         return meterTypeMapper.selectPage(page, query);
     }
-    public void delMeterType(String id) {
-        MeterType meterType = new MeterType();
-        Optional.ofNullable(chargeProjectMapper.selectById(meterType.getChargeProjectId()))
-                .orElseThrow(ChargeProjectNotFound::new);
+    public void delMeterType(Long id) {
         meterTypeMapper.deleteById(id);
     }
 
@@ -81,5 +78,9 @@ public class MeterService {
 
     public void modifyMeter(Meter meter) {
         meterMapper.updateById(meter);
+    }
+
+    public void delMeter(Long id) {
+        meterMapper.deleteById(id);
     }
 }

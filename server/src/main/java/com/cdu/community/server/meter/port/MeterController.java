@@ -61,7 +61,7 @@ public class MeterController {
     }
     @DeleteMapping("/type/{id}")
     @Operation(description = "删除表计类别")
-    public Resp<Void> delMeterType(@PathVariable String id) {
+    public Resp<Void> delMeterType(@PathVariable Long id) {
         log.info("删除表计类别：{}" , id);
         meterService.delMeterType(id);
         return Resp.ok();
@@ -90,6 +90,14 @@ public class MeterController {
     public Resp<Void> modifyMeter(@RequestBody @Valid Meter meter) {
         log.info("修改表计：{}" , meter);
         meterService.modifyMeter(meter);
+        return Resp.ok();
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(description = "删除表计")
+    public Resp<Void> delMeter(@PathVariable Long id) {
+        log.info("删除表计：{}" , id);
+        meterService.delMeter(id);
         return Resp.ok();
     }
 
