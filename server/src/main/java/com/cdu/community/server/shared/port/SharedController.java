@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,12 +35,12 @@ public class SharedController {
     private final SharedService sharedService;
 
     /**
-     * @param edificeId 大厦/小区ID
+     * @param id 大厦/小区ID
      * */
     @GetMapping("/edifice/{id}")
     @Operation(description = "查询大厦/小区信息")
-    public Resp<Edifice> getEdifice(Long edificeId){
-        return Resp.ok(sharedService.getEdificeById(edificeId));
+    public Resp<Edifice> getEdifice(@PathVariable Long id){
+        return Resp.ok(sharedService.getEdificeById(id));
     }
 
     /**

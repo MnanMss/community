@@ -138,7 +138,7 @@ CREATE TABLE building(
                          `updated_time` DATETIME   COMMENT '更新时间' ,
                          `name` VARCHAR(255) NOT NULL  COMMENT '楼栋名称' ,
                          `edifice_id` BIGINT NOT NULL  COMMENT '所属大厦/小区id' ,
-                         `building_element_id` BIGINT NOT NULL  COMMENT '所属单元id' ,
+                         `element_id` BIGINT NOT NULL  COMMENT '所属单元id' ,
                          PRIMARY KEY (id)
 )  COMMENT = '楼栋';
 

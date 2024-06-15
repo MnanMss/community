@@ -40,5 +40,5 @@ public class Building {
     private Long edificeId;
 
     @Schema(description = "所属单元id")
-    private Long buildingElementId;
+    private Long elementId;
 }
