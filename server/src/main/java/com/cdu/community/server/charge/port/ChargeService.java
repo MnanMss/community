@@ -2,9 +2,13 @@ package com.cdu.community.server.charge.port;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.cdu.community.server.charge.domain.dto.ChargeRoomDTO;
 import com.cdu.community.server.charge.domain.entity.ChargeProject;
 import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
+import com.cdu.community.server.charge.domain.entity.ChargeRoom;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
+import com.cdu.community.server.charge.infrastructure.orm.ChargeRoomMapper;
+import com.cdu.community.server.shared.domain.entity.Room;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChargeService {
     private final ChargeProjectMapper chargeProjectMapper;
+    private final ChargeRoomMapper chargeRoomMapper;
 
 
     public void addChargeProject(ChargeProjectDTO chargeProjectDTO) {
@@ -53,4 +58,41 @@ public class ChargeService {
         Page<ChargeProject> page = new Page<>(condition.getPageNum(), condition.getPageSize());
         return chargeProjectMapper.selectPage(page, query);
     }
+
+    /**
+     * 获取收费项目信息
+     *
+     * @param chargeProjectId 收费项目ID
+     * */
+    public ChargeProject getChargeProjectById(Long chargeProjectId){
+        return chargeProjectMapper.selectById(chargeProjectId);
+    }
+
+    public void addChargeRoom(ChargeRoomDTO chargeRoomDTO) {
+        ChargeRoom chargeRoom = new ChargeRoom();
+        BeanUtils.copyProperties(chargeRoomDTO , chargeRoom);
+        chargeRoomMapper.insert(chargeRoom);
+    }
+
+
+    public void editChargeRoom(Long id, ChargeRoomDTO chargeRoomDTO) {
+        ChargeRoom chargeRoom = new ChargeRoom();
+        BeanUtils.copyProperties(chargeRoomDTO, chargeRoom);
+        chargeRoom.setId(id);
+        chargeRoomMapper.updateById(chargeRoom);
+    }
+
+    public void deleteChargeRoom(Long id) {
+        chargeRoomMapper.deleteById(id);
+    }
+
+    public Page<ChargeRoom> listChargeRoom(ChargeRoomDTO condition) {
+        LambdaQueryWrapper<ChargeRoom> query = new LambdaQueryWrapper<>();
+        if(condition.getRoomId() != null){
+            query.eq(ChargeRoom::getRoomId, condition.getRoomId());
+        }
+        Page<ChargeRoom> page = new Page<>(condition.getPageNum(), condition.getPageSize());
+        return chargeRoomMapper.selectPage(page, query);
+    }
+
 }

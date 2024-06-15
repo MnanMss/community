@@ -2,10 +2,15 @@ package com.cdu.community.server.charge.port;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
+import com.cdu.community.server.charge.domain.dto.ChargeRoomDTO;
 import com.cdu.community.server.charge.domain.entity.ChargeProject;
+import com.cdu.community.server.charge.domain.entity.ChargeRoom;
 import com.cdu.community.server.charge.domain.vo.ChargeProjectVo;
+import com.cdu.community.server.charge.domain.vo.ChargeRoomVO;
 import com.cdu.community.server.shared.domain.PageDTO;
 import com.cdu.community.server.shared.domain.Resp;
+import com.cdu.community.server.shared.domain.entity.Room;
+import com.cdu.community.server.shared.port.SharedService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +32,7 @@ import java.util.List;
 @Tag(name="ChargeController" , description = "收费管理")
 public class ChargeController {
     private final ChargeService chargeService;
+    private final SharedService sharedService;
 
     @PostMapping("/project")
     @Operation(description = "新增收费项目")
@@ -60,6 +66,58 @@ public class ChargeController {
         log.info(list.getRecords().toString());
         List<ChargeProjectVo> voList = list.getRecords().stream().
                 map(ChargeProjectVo::of)
+                .toList();
+        return Resp.ok(new PageDTO<>(list.getTotal(), voList));
+    }
+
+    @PostMapping("/room/project")
+    @Operation(description = "新增房间收费项目")
+    public Resp<Void> addChargeRoom(@RequestBody ChargeRoomDTO chargeRoomDTO){
+        log.info("新增房间收费项目：{}", chargeRoomDTO);
+        chargeService.addChargeRoom(chargeRoomDTO);
+        return Resp.ok();
+    }
+
+    @PutMapping("/room/project")
+    @Operation(description = "修改房间收费项目")
+    public Resp<Void> editChargeRoom(Long id, @RequestBody ChargeRoomDTO chargeRoomDTO){
+        log.info("修改房间收费项目：{}", chargeRoomDTO);
+        chargeService.editChargeRoom(id, chargeRoomDTO);
+        return Resp.ok();
+    }
+
+    @DeleteMapping("/room/project/{id}")
+    @Operation(description = "修改房间收费项目")
+    public Resp<Void> deleteChargeRoom(@PathVariable("id")Long id){
+        log.info("删除房间收费项目：{}", id);
+        chargeService.deleteChargeRoom(id);
+        return Resp.ok();
+    }
+
+    @GetMapping("room/project/list")
+    @Operation(description = "查询房间收费项目列表")
+    public Resp<PageDTO<ChargeRoomVO>> listChargeRoom(ChargeRoomDTO condition){
+        log.info("查询房间收费项目列表：{}", condition);
+        Page<ChargeRoom> list = chargeService.listChargeRoom(condition);
+        log.info(list.getRecords().toString());
+        List<ChargeRoomVO> voList = list.getRecords().stream()
+                .map(chargeRoom -> {
+                    Room room = sharedService.getRoomById(chargeRoom.getRoomId());
+                    ChargeProject chargeProject = chargeService.getChargeProjectById(chargeRoom.getChargeProjectId());
+                    return ChargeRoomVO.of(chargeRoom, room, chargeProject);
+                })
+                .toList();
+        return Resp.ok(new PageDTO<>(list.getTotal(), voList));
+    }
+
+    @GetMapping("room/project/schedule")
+    @Operation(description = "房间收费项目一览表")
+    public Resp<PageDTO<ChargeRoomVO>> scheduleChargeRoom(ChargeRoomDTO condition){
+        log.info("房间收费项目一览表：{}", condition);
+        Page<ChargeRoom> list = chargeService.scheduleChargeRoom(condition);
+        log.info(list.getRecords().toString());
+        List<ChargeRoomVO> voList = list.getRecords().stream()
+                .map()
                 .toList();
         return Resp.ok(new PageDTO<>(list.getTotal(), voList));
     }
