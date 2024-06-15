@@ -4,9 +4,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.shared.domain.PageVO;
 import com.cdu.community.server.shared.domain.Resp;
 import com.cdu.community.server.shared.domain.dto.RoomDTO;
+import com.cdu.community.server.shared.domain.dto.RoomProprietorDTO;
 import com.cdu.community.server.shared.domain.entity.Building;
 import com.cdu.community.server.shared.domain.entity.Edifice;
 import com.cdu.community.server.shared.domain.entity.Room;
+import com.cdu.community.server.shared.domain.entity.RoomProprietor;
+import com.cdu.community.server.shared.domain.vo.RoomProprietorVO;
 import com.cdu.community.server.shared.domain.vo.RoomVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,12 +38,12 @@ public class SharedController {
     private final SharedService sharedService;
 
     /**
-     * @param id 大厦/小区ID
+     * @param edificeId 大厦/小区ID
      * */
-    @GetMapping("/edifice/{id}")
+    @GetMapping("/edifice/{edificeId}")
     @Operation(description = "查询大厦/小区信息")
-    public Resp<Edifice> getEdifice(@PathVariable Long id){
-        return Resp.ok(sharedService.getEdificeById(id));
+    public Resp<Edifice> getEdifice(@PathVariable Long edificeId){
+        return Resp.ok(sharedService.getEdificeById(edificeId));
     }
 
     /**
@@ -57,6 +60,18 @@ public class SharedController {
                     Building building = sharedService.getBuildingById(room.getBuildingId());
                     return RoomVO.of(room, building);
                 })
+                .toList();
+        return Resp.ok(new PageVO<>(list.getTotal(), voList));
+    }
+
+    @GetMapping("/manage/proprietor/list")
+    @Operation(description = "查询房间业主信息列表")
+    public Resp<PageVO<RoomProprietorVO>> listRoomProprietor(RoomProprietorDTO condition){
+        log.info("查询房间业主信息列表：{}", condition);
+        Page<RoomProprietor> list = sharedService.listRoomProprietor(condition);
+        log.info(list.getRecords().toString());
+        List<RoomProprietorVO> voList = list.getRecords().stream()
+                .map(RoomProprietorVO::of)
                 .toList();
         return Resp.ok(new PageVO<>(list.getTotal(), voList));
     }

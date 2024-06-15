@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdu.community.server.charge.infrastructure.orm.ChargeRoomStatisticsMapper">
+    <resultMap id="ChargeRoomStatisticsMap" type="com.cdu.community.server.charge.domain.entity.ChargeRoomStatistics">
+        <id property="proprietorId" column="proprietor_id"/>
+        <result property="roomCode" column="room_code"/>
+        <result property="proprietorName" column="proprietor_name"/>
+        <collection property="receiveManages" ofType="com.cdu.community.server.charge.domain.vo.ReceiveManageVO">
+            <result property="chargeProjectName" column="charge_project_name"/>
+            <result property="receiveAmount" column="receive_amount"/>
+        </collection>
+    </resultMap>
+
+    <select id="list" resultMap="ChargeRoomStatisticsMap">
+        select
+            r.code as room_code,
+            p.name as proprietor_name,
+            cp.name as charge_project_name,
+            rm.receive_amount
+        from edifice e
+        left join building b on b.edifice_id=e.id
+        left join room r on r.building_id=b.id
+        left join proprietor p on p.id=r.proprietor_id
+        left join charge_room cr on cr.room_id=r.id
+        left join charge_project cp on cp.id=cr.charge_project_id
+        left join receice_manage rm on rm.room_id=r.id
+        where 1=1
+        <if test="param.edificeId != null">
+            and e.id=#{param.edificeId}
+        </if>
+        <if test="param.buildingId != null">
+            and b.id=#{param.buildingId}
+        </if>
+        <if test="param.roomCode != null and param.roomCode != ''">
+            and r.code like '%'||#{param.roomCode}||
+        </if>
+        <if test="param.proprietorName != null and param.proprietorName != ''">
+            and p.name=#{param.proprietorName}
+        </if>
+        limit #{(param.pageNum - 1) * param.pageSize}, #{param.pageSize}
+    </select>
+</mapper>

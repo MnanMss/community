@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdu.community.server.shared.infrastructure.orm.RoomMapper">
+    <select id="listRoomProprietor" resultType="com.cdu.community.server.shared.domain.entity.RoomProprietor">
+        select r.code, p.name
+        from room r
+        left join proprietor p on r.proprietor_id=p.id
+        where 1=1
+        <if test="param.code != null and param.code != ''">
+            and r.code like concat('%',#{param.code})
+        </if>
+        <if test="param.name != null and param.name != ''">
+            and p.name like concat('%',#{param.name}, '%')
+        </if>
+        <if test="param.phone != null and param.phone != ''">
+            and r.phone like concat('%',#{param.phone})
+        </if>
+        limit #{param.offset},#{param.pageSize}
+    </select>
+</mapper>

@@ -10,8 +10,11 @@ import lombok.Data;
 @Data
 public class PageQuery {
     @Schema(description = "请求页码")
-    private int pageNum = 1;
+    private int pageNum;
 
     @Schema(description = "每页大小")
-    private int pageSize = 10;
+    private int pageSize;
+
+    @Schema(description = "偏移量")
+    private int offset;
 }

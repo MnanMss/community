@@ -54,15 +54,6 @@ public class ChargeRoomVO {
     @Schema(description = "计费结束日期")
     private LocalDateTime chargeEndTime;
 
-    @Schema(description = "收费项目")
-    private List<ChargeProject> chargeProjects;
-
-    @Schema(description = "业主Id")
-    private Long proprietorId;
-
-    @Schema(description = "业主姓名")
-    private String proprietorName;
-
     public static ChargeRoomVO of(ChargeRoom chargeRoom, Room room, ChargeProject chargeProject){
         ChargeRoomVO chargeRoomVO = new ChargeRoomVO();
         BeanUtils.copyProperties(chargeRoom , chargeRoomVO);
@@ -71,6 +62,7 @@ public class ChargeRoomVO {
         chargeRoomVO.setChargeProjectName(chargeProject.getName());
         chargeRoomVO.setBillingType(chargeProject.getBillingType());
         chargeRoomVO.setFormulaMode(chargeProject.getFormulaMode());
+
         return chargeRoomVO;
     }
 }

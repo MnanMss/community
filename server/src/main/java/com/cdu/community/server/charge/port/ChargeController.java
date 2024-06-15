@@ -3,9 +3,12 @@ package com.cdu.community.server.charge.port;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
 import com.cdu.community.server.charge.domain.dto.ChargeRoomDTO;
+import com.cdu.community.server.charge.domain.dto.ChargeRoomStatisticsDTO;
 import com.cdu.community.server.charge.domain.entity.ChargeProject;
 import com.cdu.community.server.charge.domain.entity.ChargeRoom;
+import com.cdu.community.server.charge.domain.entity.ChargeRoomStatistics;
 import com.cdu.community.server.charge.domain.vo.ChargeProjectVo;
+import com.cdu.community.server.charge.domain.vo.ChargeRoomStatisticsVO;
 import com.cdu.community.server.charge.domain.vo.ChargeRoomVO;
 import com.cdu.community.server.shared.domain.PageVO;
 import com.cdu.community.server.shared.domain.Resp;
@@ -109,4 +112,17 @@ public class ChargeController {
                 .toList();
         return Resp.ok(new PageVO<>(list.getTotal(), voList));
     }
+
+    /**
+     * 暂定
+     * */
+    @GetMapping("room/project/schedule")
+    @Operation(description = "房间收费项目一览表")
+    public Resp<PageVO<ChargeRoomStatisticsVO>> scheduleChargeRoom(ChargeRoomStatisticsDTO condition){
+        log.info("房间收费项目一览表：{}", condition);
+        PageVO<ChargeRoomStatisticsVO> list = chargeService.scheduleChargeRoom(condition);
+        return Resp.ok(list);
+    }
+
+
 }
