@@ -57,6 +57,7 @@ public class SharedService {
      * */
     public Page<Room> listRoom(RoomDTO condition) {
         LambdaQueryWrapper<Room> query = new LambdaQueryWrapper<>();
+        query.eq(Room::getBuildingId , condition.getBuildingId());
         if (condition.getCode() != null && !condition.getCode().isEmpty()){
             query.likeLeft(Room::getCode, condition.getCode());
         }
