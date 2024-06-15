@@ -48,6 +48,8 @@ CREATE TABLE room_statistics(
                                 `room_id` BIGINT   COMMENT '房间id' ,
                                 `building_id` BIGINT   COMMENT '楼栋id' ,
                                 `proprietor_id` BIGINT   COMMENT '业主id' ,
+                                `proprietor_name` VARCHAR(255)   COMMENT '业主姓名' ,
+                                `room_code` VARCHAR(255)   COMMENT '房间号' ,
                                 PRIMARY KEY (id)
 )  COMMENT = '房间统计';
 
