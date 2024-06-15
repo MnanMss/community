@@ -1,14 +1,13 @@
 package com.cdu.community.server.meter.port;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cdu.community.server.meter.domain.dto.MeterDto;
-import com.cdu.community.server.meter.domain.dto.MeterSearchDTO;
-import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
-import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
+import com.cdu.community.server.meter.domain.dto.*;
 import com.cdu.community.server.meter.domain.entity.Meter;
 import com.cdu.community.server.meter.domain.entity.MeterType;
+import com.cdu.community.server.meter.domain.entity.RoomStatistics;
 import com.cdu.community.server.meter.domain.vo.MeterTypeVO;
 import com.cdu.community.server.meter.domain.vo.MeterVO;
+import com.cdu.community.server.meter.domain.vo.RoomStatisticsVO;
 import com.cdu.community.server.shared.domain.Resp;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -52,7 +51,7 @@ public class MeterController {
         List<MeterTypeVO> voList = list.getRecords().stream().map(MeterTypeVO::of).toList();
         return Resp.ok(new PageVO<>(list.getTotal() , voList));
     }
-    @PutMapping
+    @PutMapping("/type")
     @Operation(description = "修改表计类别")
     public Resp<Void> updateMeterType( @RequestBody @Valid MeterType meterType) {
         log.info("修改表计类别：{}" ,meterType);
@@ -99,6 +98,24 @@ public class MeterController {
         log.info("删除表计：{}" , id);
         meterService.delMeter(id);
         return Resp.ok();
+    }
+
+    @GetMapping("/room/statistics")
+    @Operation(description = "房间表计统计")
+    public Resp<PageVO<RoomStatisticsVO>> listRoomStatistics(RoomStatisticsSearchDTO condition) {
+        log.info("房间表计统计：{}" , condition);
+        Page<RoomStatistics> page =  meterService.listRoomStatistics(condition);
+        List<RoomStatistics> roomStatistics = page.getRecords();
+        List<RoomStatisticsVO> list = roomStatistics.stream().map(r -> {
+            RoomStatisticsVO roomStatisticsVO = RoomStatisticsVO.builder()
+                .code(r.getRoomCode())
+                .proprietorName(r.getProprietorName())
+                .build();
+            List<MeterType> meterTypes = meterService.listMeterTypeByRoomId(r.getRoomId());
+            roomStatisticsVO.setMeters(RoomStatisticsVO.convertMeterType(meterTypes));
+            return roomStatisticsVO;
+        }).toList();
+        return Resp.ok(new PageVO<>(page.getTotal() , list));
     }
 
 }

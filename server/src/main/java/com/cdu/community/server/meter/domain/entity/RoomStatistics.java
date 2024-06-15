@@ -30,9 +30,15 @@ public class RoomStatistics {
     @Schema(description = "房间id")
     private Long roomId;
 
+    @Schema(description = "房间号")
+    private String roomCode;
+
     @Schema(description = "楼栋id")
     private Long buildingId;
 
     @Schema(description = "业主id")
     private Long proprietorId;
+
+    @Schema(description = "业主姓名")
+    private String proprietorName;
 }

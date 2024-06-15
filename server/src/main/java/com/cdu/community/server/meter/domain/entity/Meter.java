@@ -56,6 +56,7 @@ public class Meter {
     @Schema(description = "量程")
     @NotNull(message = "量程不能为空")
     @DecimalMin(value = "0.00", message = "量程不能小于0.00")
+    @TableField("`range`")
     private Double range;
 
     @Schema(description = "表计运行状态;1运行/0报停")

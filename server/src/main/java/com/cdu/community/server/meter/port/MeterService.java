@@ -4,18 +4,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.charge.domain.exception.ChargeProjectNotFound;
 import com.cdu.community.server.charge.infrastructure.orm.ChargeProjectMapper;
-import com.cdu.community.server.meter.domain.dto.MeterDto;
-import com.cdu.community.server.meter.domain.dto.MeterSearchDTO;
-import com.cdu.community.server.meter.domain.dto.MeterTypeSearchDTO;
+import com.cdu.community.server.meter.domain.dto.*;
 import com.cdu.community.server.meter.domain.entity.Meter;
 import com.cdu.community.server.meter.domain.entity.MeterType;
-import com.cdu.community.server.meter.domain.dto.MeterTypeDTO;
+import com.cdu.community.server.meter.domain.entity.RoomStatistics;
 import com.cdu.community.server.meter.infrastructure.orm.MeterMapper;
 import com.cdu.community.server.meter.infrastructure.orm.MeterTypeMapper;
+import com.cdu.community.server.meter.infrastructure.orm.RoomStatisticsMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,6 +32,8 @@ public class MeterService {
     private final ChargeProjectMapper chargeProjectMapper;
 
     private final MeterMapper meterMapper;
+
+    private final RoomStatisticsMapper roomStatisticsMapper;
 
     public void addMeterType(MeterTypeDTO meterTypeDTO) {
         MeterType meterType = new MeterType();
@@ -82,5 +85,32 @@ public class MeterService {
 
     public void delMeter(Long id) {
         meterMapper.deleteById(id);
+    }
+
+    public Page<RoomStatistics> listRoomStatistics(RoomStatisticsSearchDTO condition) {
+        LambdaQueryWrapper<RoomStatistics> query = new LambdaQueryWrapper<>();
+        if(condition.getBuildingId() != 0) {
+            query.eq(RoomStatistics::getBuildingId , condition.getBuildingId());
+        }
+        if(condition.getRoomCode() != null  && !condition.getRoomCode().isEmpty()) {
+            query.eq(RoomStatistics::getRoomCode , condition.getRoomCode());
+        }
+        if(condition.getProprietorName() != null && !condition.getProprietorName().isEmpty()) {
+            query.eq(RoomStatistics::getProprietorName , condition.getProprietorName());
+        }
+
+        Page<RoomStatistics> page = new Page<>(condition.getPageNum() , condition.getPageSize());
+        return roomStatisticsMapper.selectPage(page , query);
+    }
+
+    public List<MeterType> listMeterTypeByRoomId(Long roomId) {
+        LambdaQueryWrapper<Meter> query = new LambdaQueryWrapper<>();
+        query.eq(Meter::getRoomId , roomId);
+        List<Long> meterTypeIdList = meterMapper.selectList(query).stream().map(Meter::getMeterTypeId).toList();
+        List<MeterType> meterTypes = new ArrayList<>();
+        if(!meterTypeIdList.isEmpty()) {
+            meterTypes = meterTypeMapper.selectBatchIds(meterTypeIdList);
+        }
+        return meterTypes;
     }
 }

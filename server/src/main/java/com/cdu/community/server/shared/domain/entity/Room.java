@@ -35,8 +35,8 @@ public class Room {
     @Size(max = 255, message = "房间编号长度不能超过255个字符")
     private String code;
 
-    @Schema(description = "楼顶id")
-    @NotNull(message = "楼顶id不能为空")
+    @Schema(description = "楼栋id")
+    @NotNull(message = "楼栋id不能为空")
     private Long buildingId;
 
     @Schema(description = "所属楼层")
