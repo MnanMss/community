@@ -1,10 +1,7 @@
 package com.cdu.community.server.charge.port;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cdu.community.server.charge.domain.dto.ChargeManageDTO;
-import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
-import com.cdu.community.server.charge.domain.dto.ChargeRoomDTO;
-import com.cdu.community.server.charge.domain.dto.ChargeRoomStatisticsDTO;
+import com.cdu.community.server.charge.domain.dto.*;
 import com.cdu.community.server.charge.domain.entity.*;
 import com.cdu.community.server.charge.domain.vo.ChargeManageVO;
 import com.cdu.community.server.charge.domain.vo.ChargeProjectVo;
@@ -98,7 +95,7 @@ public class ChargeController {
         return Resp.ok();
     }
 
-    @GetMapping("room/project/list")
+    @GetMapping("/room/project/list")
     @Operation(description = "查询房间收费项目列表")
     public Resp<PageVO<ChargeRoomVO>> listChargeRoom(ChargeRoomDTO condition){
         log.info("查询房间收费项目列表：{}", condition);
@@ -117,7 +114,7 @@ public class ChargeController {
     /**
      * 暂定
      * */
-    @GetMapping("room/project/schedule")
+    @GetMapping("/room/project/schedule")
     @Operation(description = "房间收费项目一览表")
     public Resp<PageVO<ChargeRoomStatisticsVO>> scheduleChargeRoom(ChargeRoomStatisticsDTO condition){
         log.info("房间收费项目一览表：{}", condition);
@@ -128,13 +125,21 @@ public class ChargeController {
     /**
      * 收费管理表、收费项目表、应收管理表
      * */
-    @GetMapping("manage/{roomId}")
+    @GetMapping("/manage/{roomId}")
     @Operation(description = "获取收费选项-应收明细列表")
     public Resp<PageVO<ChargeManageVO>> listChargeManage(ChargeManageDTO condition){
         log.info("获取收费选项-应收明细列表：{}", condition);
         PageVO<ChargeManageVO> list = chargeService.listChargeManage(condition);
         log.info(list.toString());
         return Resp.ok(list);
+    }
+
+    @PostMapping("/receive/manage")
+    @Operation(description = "添加应收记录")
+    public Resp<Void> addReceiveManage(@RequestBody ReceiveManageDTO receiveManageDTO){
+        log.info("添加应收记录：{}", receiveManageDTO);
+        chargeService.addReceiveManage(receiveManageDTO);
+        return Resp.ok();
     }
 
 

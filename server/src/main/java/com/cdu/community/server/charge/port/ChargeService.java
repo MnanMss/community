@@ -2,11 +2,8 @@ package com.cdu.community.server.charge.port;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.cdu.community.server.charge.domain.dto.ChargeManageDTO;
-import com.cdu.community.server.charge.domain.dto.ChargeRoomDTO;
-import com.cdu.community.server.charge.domain.dto.ChargeRoomStatisticsDTO;
+import com.cdu.community.server.charge.domain.dto.*;
 import com.cdu.community.server.charge.domain.entity.*;
-import com.cdu.community.server.charge.domain.dto.ChargeProjectDTO;
 import com.cdu.community.server.charge.domain.vo.ChargeManageVO;
 import com.cdu.community.server.charge.domain.vo.ChargeRoomStatisticsVO;
 import com.cdu.community.server.charge.domain.vo.ReceiveManageVO;
@@ -205,4 +202,9 @@ public class ChargeService {
         return vo;
     }
 
+    public void addReceiveManage(ReceiveManageDTO receiveManageDTO) {
+        ReceiveManage receiveManage = new ReceiveManage();
+        BeanUtils.copyProperties(receiveManageDTO, receiveManage);
+        receiveManageMapper.insert(receiveManage);
+    }
 }
