@@ -142,5 +142,12 @@ public class ChargeController {
         return Resp.ok();
     }
 
+    @PutMapping("/receive/manage")
+    @Operation(description = "修改应收记录")
+    public Resp<Void> editReceiveManage(@RequestBody ReceiveManageDTO receiveManageDTO){
+        log.info("修改应收记录：{}", receiveManageDTO);
+        chargeService.editReceiveManage(receiveManageDTO);
+        return Resp.ok();
+    }
 
 }

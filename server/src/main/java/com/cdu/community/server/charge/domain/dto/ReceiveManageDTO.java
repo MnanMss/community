@@ -1,6 +1,7 @@
 package com.cdu.community.server.charge.domain.dto;
 
 import com.cdu.community.server.shared.domain.PageQuery;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
@@ -30,10 +31,12 @@ public class ReceiveManageDTO extends PageQuery {
 
     @Schema(description = "起始日期")
     @NotNull(message = "起始日期不能为空")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
 
     @Schema(description = "截至日期")
     @NotNull(message = "截至日期不能为空")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
 
     @Schema(description = "数量;0.00")
@@ -58,6 +61,7 @@ public class ReceiveManageDTO extends PageQuery {
 
     @Schema(description = "录入时间")
     @NotNull(message = "录入时间不能为空")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime recordTime;
 
     @Schema(description = "录入人id")

@@ -207,4 +207,10 @@ public class ChargeService {
         BeanUtils.copyProperties(receiveManageDTO, receiveManage);
         receiveManageMapper.insert(receiveManage);
     }
+
+    public void editReceiveManage(ReceiveManageDTO receiveManageDTO) {
+        ReceiveManage receiveManage = new ReceiveManage();
+        BeanUtils.copyProperties(receiveManageDTO, receiveManage);
+        receiveManageMapper.updateById(receiveManage);
+    }
 }
