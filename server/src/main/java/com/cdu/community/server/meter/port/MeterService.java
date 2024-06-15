@@ -127,4 +127,8 @@ public class MeterService {
         meterReadingRecord.setRoomId(roomId);
         meterReadingRecordMapper.insert(meterReadingRecord);
     }
+
+    public void modifyMeterRecord(MeterReadingRecord meterReadingRecord) {
+        meterReadingRecordMapper.updateById(meterReadingRecord);
+    }
 }

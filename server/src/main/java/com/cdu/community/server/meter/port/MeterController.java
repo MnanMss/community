@@ -3,6 +3,7 @@ package com.cdu.community.server.meter.port;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.cdu.community.server.meter.domain.dto.*;
 import com.cdu.community.server.meter.domain.entity.Meter;
+import com.cdu.community.server.meter.domain.entity.MeterReadingRecord;
 import com.cdu.community.server.meter.domain.entity.MeterType;
 import com.cdu.community.server.meter.domain.entity.RoomStatistics;
 import com.cdu.community.server.meter.domain.vo.MeterTypeVO;
@@ -123,6 +124,15 @@ public class MeterController {
     public Resp<Void> addMeterRecord(@RequestBody @Valid MeterReadingRecordDTO meterReadingRecordDTO) {
         log.info("新增抄表记录：{}" , meterReadingRecordDTO);
         meterService.addMeterRecord(meterReadingRecordDTO);
+        return Resp.ok();
+    }
+
+
+    @PutMapping("/reading/record")
+    @Operation(description = "修改抄表记录")
+    public Resp<Void> modifyMeterRecord(@RequestBody @Valid MeterReadingRecord meterReadingRecord) {
+        log.info("修改抄表记录：{}" , meterReadingRecord);
+        meterService.modifyMeterRecord(meterReadingRecord);
         return Resp.ok();
     }
 }
