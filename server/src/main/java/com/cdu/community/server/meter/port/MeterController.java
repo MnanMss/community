@@ -135,4 +135,12 @@ public class MeterController {
         meterService.modifyMeterRecord(meterReadingRecord);
         return Resp.ok();
     }
+
+    @DeleteMapping("/reading/record/{id}")
+    @Operation(description = "删除抄表记录")
+    public Resp<Void> delMeterRecord(@PathVariable Long id) {
+        log.info("删除抄表记录：{}" , id);
+        meterService.delMeterRecord(id);
+        return Resp.ok();
+    }
 }

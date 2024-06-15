@@ -131,4 +131,8 @@ public class MeterService {
     public void modifyMeterRecord(MeterReadingRecord meterReadingRecord) {
         meterReadingRecordMapper.updateById(meterReadingRecord);
     }
+
+    public void delMeterRecord(Long id) {
+        meterReadingRecordMapper.deleteById(id);
+    }
 }
